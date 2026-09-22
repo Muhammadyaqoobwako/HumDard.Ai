@@ -10,6 +10,8 @@
 }
 
 .brand-logo {
+  box-sizing: border-box;
+  padding: 3px;
   transition: filter 280ms ease, transform 280ms ease;
 }
 
