@@ -1,0 +1,152 @@
+import { CameraIcon, UserCircleIcon } from "@heroicons/react/24/outline";
+import { useRef, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+
+function Profile() {
+  const { user } = useAuth();
+  const inputRef = useRef(null);
+  const [name, setName] = useState(user?.name || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [newPassword, setNewPassword] = useState("");
+  const [preview, setPreview] = useState("");
+
+  const handleUpload = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const imageUrl = URL.createObjectURL(file);
+    setPreview(imageUrl);
+  };
+
+  return (
+    <main className="page-surface mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <section className="mx-auto w-full max-w-3xl border-2 border-slate-950 bg-white p-6 shadow-[8px_8px_0_rgba(15,23,42,0.9)] dark:border-cyan-200 dark:bg-slate-900 dark:shadow-[8px_8px_0_rgba(8,145,178,0.55)] sm:p-8">
+        <p className="page-kicker">Personal care workspace</p>
+        <h1 className="mt-4 text-4xl font-semibold leading-[0.95] tracking-[-0.06em] text-slate-900 dark:text-white sm:text-5xl">
+          Profile Settings
+        </h1>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-300">
+          Update your personal details, manage account security, and keep your
+          mentorship profile ready for better recommendations.
+        </p>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {[
+            ["Profile completeness", "86%"],
+            ["Security level", "Good"],
+            ["Last updated", "Today"],
+          ].map(([label, value]) => (
+            <div
+              key={label}
+              className="border border-slate-300 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/60"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-300">
+                {label}
+              </p>
+              <p className="mt-2 text-base font-semibold text-slate-900 dark:text-white">
+                {value}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="h-20 w-20 overflow-hidden rounded-full border-2 border-blue-300 bg-slate-100 dark:bg-slate-700">
+            {preview ? (
+              <img
+                src={preview}
+                alt="Profile preview"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <UserCircleIcon className="h-12 w-12 text-slate-400 dark:text-slate-300" />
+              </div>
+            )}
+          </div>
+          <div>
+            <button
+              type="button"
+              onClick={() => inputRef.current?.click()}
+              className="inline-flex items-center gap-2 border-2 border-slate-950 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-600 hover:text-blue-600 dark:border-slate-300 dark:bg-slate-800 dark:text-slate-100"
+            >
+              <CameraIcon className="h-4 w-4" />
+              Upload Picture
+            </button>
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleUpload}
+              className="hidden"
+            />
+          </div>
+        </div>
+
+        <form className="mt-8 space-y-4">
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-slate-100">
+              Name
+            </label>
+            <input
+              type="text"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className="w-full border-b-2 border-slate-300 bg-transparent px-0 py-3 text-gray-900 transition focus:border-blue-600 focus:outline-none dark:border-slate-600 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-slate-100">
+              Email
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="w-full border-b-2 border-slate-300 bg-transparent px-0 py-3 text-gray-900 transition focus:border-blue-600 focus:outline-none dark:border-slate-600 dark:text-white"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-slate-100">
+              Update Password
+            </label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(event) => setNewPassword(event.target.value)}
+              placeholder="Enter new password"
+              className="w-full border-b-2 border-slate-300 bg-transparent px-0 py-3 text-gray-900 transition focus:border-blue-600 focus:outline-none dark:border-slate-600 dark:text-white"
+            />
+          </div>
+
+          <button
+            type="button"
+            className="border-2 border-slate-950 bg-blue-600 px-5 py-2.5 font-semibold text-white shadow-[4px_4px_0_rgba(15,23,42,0.85)] transition hover:bg-blue-700 dark:border-cyan-200"
+          >
+            Edit Profile
+          </button>
+        </form>
+
+        <div className="mt-8 border border-slate-300 bg-slate-50 p-4 dark:border-slate-600 dark:bg-slate-800/60">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-200">
+            Security Tips
+          </h2>
+          <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+            <li>
+              Use a unique password with at least 8 characters and a number.
+            </li>
+            <li>
+              Update your profile details so AI guidance can stay relevant.
+            </li>
+            <li>
+              Review account activity weekly to maintain consistency and trust.
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default Profile;

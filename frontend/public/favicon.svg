@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="HumDard AI logo">
+	<defs>
+		<linearGradient id="humDardGrad" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0%" stop-color="#2563eb" />
+			<stop offset="100%" stop-color="#06b6d4" />
+		</linearGradient>
+	</defs>
+	<rect x="4" y="4" width="56" height="56" rx="16" fill="url(#humDardGrad)" />
+	<path
+		d="M19 20v24h5v-9h16v9h5V20h-5v10H24V20z"
+		fill="#ffffff"
+	/>
+</svg>

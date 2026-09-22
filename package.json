@@ -1,0 +1,31 @@
+{
+  "name": "humdard-ai",
+  "version": "1.0.0",
+  "description": "HumDard AI - Emotion-aware mentoring platform",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "frontend:install": "cd frontend && npm install",
+    "frontend:dev": "cd frontend && npm run dev",
+    "frontend:build": "cd frontend && npm run build",
+    "frontend:preview": "cd frontend && npm run preview",
+    "backend:install": "cd backend && npm install",
+    "backend:start": "cd backend && npm start",
+    "backend:dev": "cd backend && npm run dev",
+    "install:all": "npm install && npm run frontend:install && npm run backend:install",
+    "dev": "npm run frontend:dev",
+    "build": "npm run frontend:build"
+  },
+  "keywords": [
+    "emotion-aware",
+    "mentoring",
+    "ai",
+    "support",
+    "wellness"
+  ],
+  "author": "HumDard Team",
+  "license": "MIT"
+}

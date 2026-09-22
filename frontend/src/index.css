@@ -1,0 +1,331 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-primary: #2563eb;
+  --brand-secondary: #ffffff;
+  --bg-dark: #0f172a;
+  --card-dark: #1e293b;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8fafc;
+}
+
+.dark body {
+  background: #020617;
+}
+
+.glass {
+  @apply border border-white/20 bg-white/70 backdrop-blur-xl;
+}
+
+.page-surface {
+  background: #f8fafc;
+}
+
+.dark .page-surface {
+  background: #020617;
+}
+
+.page-kicker {
+  @apply text-sm font-semibold uppercase tracking-[0.3em] text-blue-600 dark:text-blue-300;
+}
+
+.page-heading {
+  @apply mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 dark:text-white sm:text-5xl;
+}
+
+.dark .glass {
+  @apply border-slate-700/60 bg-slate-800/75;
+}
+
+.soft-shadow {
+  box-shadow: 0 20px 45px -22px rgba(37, 99, 235, 0.45);
+}
+
+.dashboard-display {
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  letter-spacing: -0.045em;
+}
+
+main article[class*="rounded-"],
+.page-surface main [class*="rounded-3xl"],
+.page-surface main [class*="rounded-[2rem]"],
+.page-surface main [class*="rounded-[1.5rem]"] {
+  border-radius: 0.75rem;
+  box-shadow: 0 18px 40px -28px rgba(15, 23, 42, 0.7);
+}
+
+main article[class*="rounded-"]:hover,
+.page-surface main [class*="rounded-3xl"]:hover,
+.page-surface main [class*="rounded-[2rem]"]:hover,
+.page-surface main [class*="rounded-[1.5rem]"]:hover {
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 24px 44px -24px rgba(37, 99, 235, 0.45);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 700ms ease-out both;
+}
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
+
+.animation-delay-200 {
+  animation-delay: 200ms;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.hero-display {
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-weight: 700;
+}
+
+.hero-word {
+  display: block;
+  opacity: 0;
+  transform: translateY(0.75rem);
+  animation: hero-word-in 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero-word-one { animation-delay: 120ms; }
+.hero-word-two { animation-delay: 240ms; }
+.hero-word-three { animation-delay: 360ms; }
+
+.hero-accent {
+  color: #2563eb;
+  font-style: normal;
+  text-shadow: 0 0 0 transparent;
+  transition: color 300ms ease;
+}
+
+.hero-display:hover .hero-accent {
+  color: #0891b2;
+}
+
+.hero-support {
+  animation-duration: 900ms;
+}
+
+.hero-media {
+  animation: hero-media-in 1100ms 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: transform 500ms ease, box-shadow 500ms ease;
+}
+
+.hero-media:hover {
+  transform: translateY(-0.2rem);
+  box-shadow: 8px 9px 0 rgba(15, 23, 42, 0.85);
+}
+
+.landing-section {
+  animation: landing-section-in 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-card-grid > article {
+  animation: landing-card-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.landing-card-grid > article:nth-child(1) { animation-delay: 80ms; }
+.landing-card-grid > article:nth-child(2) { animation-delay: 150ms; }
+.landing-card-grid > article:nth-child(3) { animation-delay: 220ms; }
+.landing-card-grid > article:nth-child(4) { animation-delay: 290ms; }
+
+@keyframes landing-section-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes landing-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-word-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-media-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem) scale(0.985);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .hero-word,
+  .hero-media,
+  .landing-section,
+  .landing-card-grid > article {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.45);
+}
+
+.dashboard-brain {
+  animation: dashboard-brain-float 6s ease-in-out infinite;
+  filter: saturate(0.9) contrast(1.05) drop-shadow(0 0 24px rgba(249, 115, 22, 0.28));
+  transform-origin: center;
+  transition: filter 500ms ease, opacity 500ms ease;
+}
+
+.dashboard-brain-panel {
+  cursor: default;
+}
+
+.dashboard-brain-panel:hover .dashboard-brain {
+  filter: saturate(1.15) contrast(1.08) drop-shadow(0 0 34px rgba(249, 115, 22, 0.52));
+  opacity: 1;
+}
+
+.dashboard-brain-message {
+  position: relative;
+  min-height: 1.25rem;
+}
+
+.dashboard-brain-message-default,
+.dashboard-brain-message-hover {
+  display: block;
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+
+.dashboard-brain-message-hover {
+  position: absolute;
+  inset: 1rem 0 auto;
+  opacity: 0;
+  transform: translateY(0.35rem);
+}
+
+.dashboard-brain-panel:hover .dashboard-brain-message-default {
+  opacity: 0;
+  transform: translateY(-0.35rem);
+}
+
+.dashboard-brain-panel:hover .dashboard-brain-message-hover {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes dashboard-brain-float {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1);
+  }
+
+  50% {
+    transform: translateY(calc(-50% - 0.45rem)) scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-brain {
+    animation: none;
+  }
+
+  .dashboard-brain,
+  .dashboard-brain-message-default,
+  .dashboard-brain-message-hover {
+    transition: none;
+  }
+}
+
+.live-session-video-stage:fullscreen {
+  overflow: hidden;
+  background: #020617;
+}
+
+.live-session-video-stage:fullscreen .live-session-header {
+  position: relative;
+  z-index: 5;
+}
+
+.live-session-video-stage video,
+.live-session-video-stage img {
+  transition: filter 500ms ease, transform 700ms ease;
+}
+
+.live-session-video-stage:hover video,
+.live-session-video-stage:hover img {
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.live-session-video-stage:fullscreen .relative.aspect-video {
+  height: calc(100vh - 4.5rem);
+  max-height: none;
+  aspect-ratio: auto;
+}
+
+.live-session-video-stage:fullscreen video,
+.live-session-video-stage:fullscreen img {
+  object-fit: contain;
+}
+
+.live-session-shell:fullscreen {
+  overflow: auto;
+  background: #f8fafc;
+}
+
+.dark .live-session-shell:fullscreen {
+  background: #020617;
+}
+
+
