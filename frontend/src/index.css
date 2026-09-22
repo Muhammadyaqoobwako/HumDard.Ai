@@ -10,21 +10,12 @@
 }
 
 .brand-logo {
-  filter: brightness(0);
   transition: filter 280ms ease, transform 280ms ease;
 }
 
 .brand-logo:hover {
-  filter: brightness(0) saturate(100%) invert(37%) sepia(95%) saturate(1665%) hue-rotate(203deg) brightness(92%) contrast(94%);
+  filter: saturate(1.45) hue-rotate(12deg) brightness(1.06);
   transform: scale(1.04);
-}
-
-.dark .brand-logo {
-  filter: brightness(0) invert(1);
-}
-
-.dark .brand-logo:hover {
-  filter: brightness(0) saturate(100%) invert(85%) sepia(42%) saturate(1111%) hue-rotate(143deg) brightness(103%) contrast(101%);
 }
 
 html,
