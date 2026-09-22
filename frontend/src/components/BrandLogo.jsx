@@ -1,3 +1,5 @@
+import primaryLogo from "../assets/Primary Logo.png";
+
 function BrandLogo({ size = "md", className = "", rounded = true }) {
   const sizeClasses = {
     sm: "h-8 w-8",
@@ -9,7 +11,7 @@ function BrandLogo({ size = "md", className = "", rounded = true }) {
 
   return (
     <img
-      src="/favicon.svg"
+      src={primaryLogo}
       alt="HumDard AI logo"
       className={`${resolvedSize} ${rounded ? "rounded-2xl" : ""} object-cover ${className}`.trim()}
       loading="eager"
