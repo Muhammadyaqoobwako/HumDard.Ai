@@ -1,4 +1,3 @@
-import primaryLogo from "../assets/favicon.png";
 import { useTheme } from "../contexts/ThemeContext";
 
 function BrandLogo({ size = "md", className = "", rounded = true }) {
@@ -13,7 +12,7 @@ function BrandLogo({ size = "md", className = "", rounded = true }) {
 
   return (
     <img
-      src={primaryLogo}
+      src="/favicon.svg"
       alt="HumDard AI logo"
       className={`${resolvedSize} w-auto object-contain brand-logo ${rounded ? "rounded-xl" : ""} ${darkMode ? "brand-logo-dark" : "brand-logo-light"} ${className}`.trim()}
       loading="eager"

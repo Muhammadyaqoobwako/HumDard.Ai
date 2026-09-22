@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
@@ -11,18 +10,9 @@ import LiveSession from "./pages/LiveSession";
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import { useTheme } from "./contexts/ThemeContext";
-import primaryLogo from "./assets/favicon.png";
 
 function App() {
   const { darkMode } = useTheme();
-
-  useEffect(() => {
-    const favicon = document.querySelector('link[rel="icon"]');
-    if (favicon) {
-      favicon.href = primaryLogo;
-      favicon.type = "image/png";
-    }
-  }, []);
 
   return (
     <div className={darkMode ? "dark" : ""}>
