@@ -13,9 +13,9 @@ function Footer() {
     <footer className="border-t border-slate-200 bg-white/90 px-4 py-12 backdrop-blur dark:border-slate-700 dark:bg-slate-950/85 sm:px-6 lg:px-8">
       <div className="mx-auto grid w-full max-w-7xl gap-8 text-sm text-slate-600 dark:text-slate-300 md:grid-cols-[1.35fr_1fr_1fr]">
         <div>
-          <div className="flex items-center gap-3">
+          <div className="brand-lockup flex items-center gap-3">
             <BrandLogo />
-            <p className="text-base font-semibold text-slate-900 dark:text-white">
+            <p className="brand-name text-base font-semibold text-slate-900 dark:text-white">
               HumDard AI
             </p>
           </div>

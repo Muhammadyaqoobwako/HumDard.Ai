@@ -46,11 +46,11 @@ function Navbar() {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
         <Link
           to={isAuthenticated ? "/dashboard" : "/"}
-          className="flex items-center gap-2 text-lg font-bold uppercase tracking-tight text-slate-900 dark:text-white sm:gap-3 sm:text-xl"
+          className="brand-lockup flex items-center gap-2 text-lg font-bold uppercase tracking-tight text-slate-900 dark:text-white sm:gap-3 sm:text-xl"
           onClick={closeMobile}
         >
           <BrandLogo />
-          <span className="truncate">
+          <span className="brand-name truncate">
             HumDard AI
           </span>
         </Link>

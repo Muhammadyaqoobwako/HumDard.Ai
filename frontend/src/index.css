@@ -18,6 +18,18 @@
   transform: scale(1.04);
 }
 
+.brand-name {
+  transition: color 280ms ease;
+}
+
+.brand-lockup:hover .brand-name {
+  color: #2563eb;
+}
+
+.dark .brand-lockup:hover .brand-name {
+  color: #67e8f9;
+}
+
 html,
 body,
 #app {
