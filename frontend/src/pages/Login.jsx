@@ -31,7 +31,7 @@ function Login() {
       const response = await login({ email, password });
       navigate(from, { replace: true });
     } catch (requestError) {
-      setError("Authentication failed. Try again.");
+      setError(requestError.message || "Authentication failed. Try again.");
     } finally {
       setIsLoading(false);
     }

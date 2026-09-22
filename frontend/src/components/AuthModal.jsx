@@ -38,8 +38,8 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
     try {
       await login({ email: loginData.email, password: loginData.password });
       close();
-    } catch {
-      setError("Login failed. Please try again.");
+    } catch (requestError) {
+      setError(requestError.message || "Login failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -72,8 +72,8 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
         password: signupData.password,
       });
       close();
-    } catch {
-      setError("Signup failed. Please try again.");
+    } catch (requestError) {
+      setError(requestError.message || "Signup failed. Please try again.");
     } finally {
       setIsLoading(false);
     }

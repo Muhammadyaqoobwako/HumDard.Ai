@@ -2,18 +2,28 @@ import { createContext, useContext, useMemo, useState } from "react";
 
 const AuthContext = createContext(null);
 
-function fakeAuthApi(payload) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        token: `humdard-token-${Date.now()}`,
-        user: {
-          name: payload.fullName || "HumDard User",
-          email: payload.email,
-        },
-      });
-    }, 650);
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+
+async function authRequest(endpoint, payload) {
+  const response = await fetch(`${API_URL}/auth/${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
   });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.message || "Authentication request failed");
+  }
+
+  return data;
+}
+
+function normalizeUser(user) {
+  return {
+    ...user,
+    name: user.name || user.fullName || "HumDard User",
+  };
 }
 
 export function AuthProvider({ children }) {
@@ -26,21 +36,27 @@ export function AuthProvider({ children }) {
   });
 
   const login = async (credentials) => {
-    const response = await fakeAuthApi(credentials);
+    const response = await authRequest("login", credentials);
+    const user = normalizeUser(response.user);
     localStorage.setItem("humdard-token", response.token);
-    localStorage.setItem("humdard-user", JSON.stringify(response.user));
+    localStorage.setItem("humdard-user", JSON.stringify(user));
     setToken(response.token);
-    setUser(response.user);
-    return response;
+    setUser(user);
+    return { ...response, user };
   };
 
   const signup = async (payload) => {
-    const response = await fakeAuthApi(payload);
+    const response = await authRequest("signup", {
+      fullName: payload.fullName,
+      email: payload.email,
+      password: payload.password,
+    });
+    const user = normalizeUser(response.user);
     localStorage.setItem("humdard-token", response.token);
-    localStorage.setItem("humdard-user", JSON.stringify(response.user));
+    localStorage.setItem("humdard-user", JSON.stringify(user));
     setToken(response.token);
-    setUser(response.user);
-    return response;
+    setUser(user);
+    return { ...response, user };
   };
 
   const logout = () => {

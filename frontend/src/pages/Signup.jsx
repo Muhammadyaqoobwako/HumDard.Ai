@@ -52,6 +52,8 @@ function Signup() {
     try {
       await signup(formData);
       navigate("/dashboard");
+    } catch (requestError) {
+      setErrors({ form: requestError.message || "Signup failed. Try again." });
     } finally {
       setIsLoading(false);
     }
@@ -104,6 +106,9 @@ function Signup() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {errors.form ? (
+                <p className="text-sm text-red-500">{errors.form}</p>
+              ) : null}
               <div>
                 <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-slate-300">
                   Full Name
