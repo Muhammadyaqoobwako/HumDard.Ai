@@ -49,7 +49,7 @@ function Navbar() {
           className="flex items-center gap-2 text-lg font-bold uppercase tracking-tight text-slate-900 dark:text-white sm:gap-3 sm:text-xl"
           onClick={closeMobile}
         >
-          <BrandLogo className="shadow-lg shadow-blue-500/30" />
+          <BrandLogo />
           <span className="truncate">
             HumDard AI
           </span>

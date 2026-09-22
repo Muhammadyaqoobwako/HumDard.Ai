@@ -19,7 +19,7 @@ body {
   margin: 0;
   overflow-x: hidden;
   font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f8fafc;
+  background: linear-gradient(145deg, #f8fafc 0%, #eef4fb 46%, #dce8f3 100%);
 }
 
 .dark body {
@@ -31,7 +31,7 @@ body {
 }
 
 .page-surface {
-  background: #f8fafc;
+  background: transparent;
 }
 
 .dark .page-surface {

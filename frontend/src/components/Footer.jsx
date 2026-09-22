@@ -14,7 +14,7 @@ function Footer() {
       <div className="mx-auto grid w-full max-w-7xl gap-8 text-sm text-slate-600 dark:text-slate-300 md:grid-cols-[1.35fr_1fr_1fr]">
         <div>
           <div className="flex items-center gap-3">
-            <BrandLogo className="shadow-lg shadow-blue-500/25" />
+            <BrandLogo />
             <p className="text-base font-semibold text-slate-900 dark:text-white">
               HumDard AI
             </p>

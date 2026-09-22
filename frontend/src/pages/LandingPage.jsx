@@ -104,9 +104,9 @@ function LandingPage({ initialAuthMode = null }) {
   };
 
   return (
-    <main className="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white">
+    <main className="text-slate-900 dark:bg-slate-950 dark:text-white">
       <section id="home" className="landing-section relative overflow-hidden border-b border-slate-200 dark:border-slate-800">
-        <div className="absolute inset-0 -z-10 bg-slate-50 dark:bg-slate-950" />
+        <div className="absolute inset-0 -z-10 bg-transparent dark:bg-slate-950" />
         <div className="mx-auto max-w-7xl px-4 pb-24 pt-16 sm:px-6 lg:px-8 lg:pb-36 lg:pt-24">
           <div className="grid items-end gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
             <div className="max-w-3xl">

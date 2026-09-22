@@ -67,7 +67,7 @@ function Login() {
         <div className="w-full p-6 sm:p-8 lg:p-10">
           <div className="mx-auto w-full max-w-sm space-y-6 lg:p-2">
             <div className="flex flex-col items-center gap-4">
-              <BrandLogo size="lg" rounded={false} className="rounded-full" />
+              <BrandLogo size="lg" rounded={false} />
               <div className="text-center">
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
                   HumDard AI
