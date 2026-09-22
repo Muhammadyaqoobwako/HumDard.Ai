@@ -1,4 +1,4 @@
-import primaryLogo from "../assets/Primary Logo.png";
+import primaryLogo from "../assets/favicon.png";
 import { useTheme } from "../contexts/ThemeContext";
 
 function BrandLogo({ size = "md", className = "", rounded = true }) {

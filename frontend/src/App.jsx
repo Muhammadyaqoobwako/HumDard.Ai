@@ -11,7 +11,7 @@ import LiveSession from "./pages/LiveSession";
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import { useTheme } from "./contexts/ThemeContext";
-import primaryLogo from "./assets/Primary Logo.png";
+import primaryLogo from "./assets/favicon.png";
 
 function App() {
   const { darkMode } = useTheme();
