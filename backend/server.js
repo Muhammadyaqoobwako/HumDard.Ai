@@ -16,11 +16,16 @@ import messageRoutes from "./routes/messageRoutes.js";
 dotenv.config();
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
+const isAllowedOrigin = (origin) =>
+  !origin ||
+  origin === process.env.CLIENT_URL ||
+  /^http:\/\/localhost:\d+$/.test(origin);
+
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: isAllowedOrigin,
     methods: ["GET", "POST"],
   },
 });
@@ -29,7 +34,14 @@ const io = new Server(httpServer, {
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Origin is not allowed by CORS"));
+    },
   })
 );
 app.use(express.json());
