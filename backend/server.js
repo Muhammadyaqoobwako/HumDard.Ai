@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
+import dns from "node:dns";
 import { initializeSocket } from "./socket/socketHandler.js";
 
 // Import routes
@@ -13,6 +14,7 @@ import sessionRoutes from "./routes/sessionRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
 
 dotenv.config();
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express();
 const httpServer = createServer(app);
@@ -44,6 +46,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/messages", messageRoutes);
 
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "HumDard API is running" });
+});
+
 // Health check
 app.get("/api/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
@@ -66,7 +72,7 @@ app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4001;
 
 httpServer.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
