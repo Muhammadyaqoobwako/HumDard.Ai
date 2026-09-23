@@ -58,37 +58,79 @@ export const generateAIResponse = async (req, res) => {
   try {
     const { sessionId, userMessage, emotionalContext } = req.body;
 
-    // This is a placeholder - integrate with actual AI service
-    const responses = {
-      sad: "I hear you. Let us break this challenge into one small next step.",
-      anxious:
-        "That sounds heavy. Take a deep breath, then tell me the hardest part first.",
-      happy:
-        "That's wonderful to hear! What made you feel this way?",
-      neutral:
-        "Thank you for sharing. I'm here to listen and help.",
-    };
+    if (!userMessage?.trim()) {
+      return res.status(400).json({ message: "Please provide a message" });
+    }
 
-    const aiMessage = await Message.create({
-      sessionId,
-      senderId: null,
-      senderType: "ai",
-      messageType: "text",
-      content: responses[emotionalContext?.emotion] || responses.neutral,
-      aiResponse: {
-        isAIGenerated: true,
-        confidence: 0.85,
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(503).json({
+        message: "AI is not configured. Add OPENAI_API_KEY to backend/.env.",
+      });
+    }
+
+    const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        model: process.env.OPENAI_MODEL || "gpt-4o-mini",
+        temperature: 0.7,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are HumDard AI, a warm and practical wellbeing assistant. Answer the user's actual question, not just their detected emotion. Be concise, empathetic, and never claim to be a doctor. For immediate danger or self-harm, encourage contacting local emergency services and a trusted person.",
+          },
+          {
+            role: "user",
+            content: `User emotion context: ${JSON.stringify(
+              emotionalContext || {},
+            )}\n\nUser question: ${userMessage.trim()}`,
+          },
+        ],
+      }),
     });
 
-    // Add to session
-    await Session.findByIdAndUpdate(sessionId, {
-      $push: { messages: aiMessage._id },
-    });
+    const responseData = await aiResponse.json();
+    if (!aiResponse.ok) {
+      return res.status(502).json({
+        message: responseData.error?.message || "AI provider request failed",
+      });
+    }
+
+    const content = responseData.choices?.[0]?.message?.content?.trim();
+    if (!content) {
+      return res.status(502).json({ message: "AI returned an empty response" });
+    }
+
+    let aiMessage = null;
+    if (sessionId) {
+      aiMessage = await Message.create({
+        sessionId,
+        senderId: null,
+        senderType: "ai",
+        messageType: "text",
+        content,
+        aiResponse: {
+          isAIGenerated: true,
+          aiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
+        },
+      });
+
+      await Session.findByIdAndUpdate(sessionId, {
+        $push: { messages: aiMessage._id },
+      });
+    }
 
     res.status(201).json({
       message: "AI response generated",
-      data: aiMessage,
+      data: aiMessage || {
+        content,
+        senderType: "ai",
+        aiResponse: { isAIGenerated: true },
+      },
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

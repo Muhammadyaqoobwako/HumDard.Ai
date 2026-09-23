@@ -157,7 +157,7 @@ const sampleQuestions = [
 ];
 
 function LiveSession() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { updateEmotion } = useEmotion();
   const socketRef = useRef(null);
   const recognitionRef = useRef(null);
@@ -338,7 +338,7 @@ function LiveSession() {
   );
 
   const sendMessage = useCallback(
-    (text) => {
+    async (text) => {
       const userMessage = {
         id: Date.now(),
         sender: "user",
@@ -349,7 +349,6 @@ function LiveSession() {
 
       showConversationBubble("user", text);
 
-      const normalized = text.toLowerCase().trim();
       const detectedEmotion = detectEmotionFromText(text);
       updateEmotion({
         ...detectedEmotion,
@@ -357,51 +356,42 @@ function LiveSession() {
           detectedEmotion.keywords.length > 0 ? detectedEmotion.keywords : [],
       });
 
-      const matchedQuestion = sampleQuestions.find((question) =>
-        question.keywords.some((keyword) =>
-          normalized.includes(keyword.toLowerCase()),
-        ),
-      );
+      try {
+        const response = await fetch("http://localhost:4001/api/messages/ai-response", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            userMessage: text,
+            emotionalContext: detectedEmotion,
+          }),
+        });
+        const data = await response.json().catch(() => ({}));
 
-      let response = "";
-      if (matchedQuestion) {
-        changeVideoWithTransition(matchedQuestion.video, matchedQuestion.text);
-        playVideoSource(matchedQuestion.video);
+        if (!response.ok) {
+          throw new Error(data.message || "The AI response could not be loaded.");
+        }
 
-        response = matchedQuestion.answer;
-
-        const aiMessage = {
-          id: Date.now() + 1,
-          sender: "ai",
-          text: response,
-        };
-
-        setMessages((prev) => [...prev, aiMessage]);
-
-        setTimeout(() => {
-          showConversationBubble("ai", response);
-        }, 300);
-      } else {
-        response = "Sorry, I can't understand it.";
-        changeVideoWithTransition(sorryVideo, "unmatched");
-        playVideoSource(sorryVideo);
-
-        const aiMessage = {
-          id: Date.now() + 1,
-          sender: "ai",
-          text: response,
-        };
-
-        setMessages((prev) => [...prev, aiMessage]);
-
-        setTimeout(() => {
-          showConversationBubble("ai", response);
-        }, 300);
+        const aiText = data.data?.content || "I am here with you. Please tell me more.";
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, sender: "ai", text: aiText },
+        ]);
+        showConversationBubble("ai", aiText);
+      } catch (error) {
+        const fallback = error.message || "The AI response could not be loaded.";
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, sender: "ai", text: fallback },
+        ]);
+        showConversationBubble("ai", fallback);
       }
     },
     [
+      token,
       showConversationBubble,
-      changeVideoWithTransition,
       detectEmotionFromText,
       updateEmotion,
     ],
@@ -450,38 +440,9 @@ function LiveSession() {
 
   const handleSampleQuestion = useCallback(
     (question) => {
-      const timestamp = Date.now();
-      const detectedEmotion = detectEmotionFromText(question.text);
-      updateEmotion(detectedEmotion);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: timestamp,
-          sender: "user",
-          text: question.text,
-        },
-        {
-          id: timestamp + 1,
-          sender: "ai",
-          text: `HumDard : ${question.text}`,
-        },
-      ]);
-
-      changeVideoWithTransition(question.video, question.text);
-
-      showConversationBubble("user", question.text);
-
-      setTimeout(() => {
-        showConversationBubble("ai", `Playing video for ${question.text}`);
-      }, 300);
+      sendMessage(question.text);
     },
-    [
-      changeVideoWithTransition,
-      showConversationBubble,
-      detectEmotionFromText,
-      updateEmotion,
-    ],
+    [sendMessage],
   );
 
   useEffect(() => {

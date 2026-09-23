@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js",
+    "dev": "nodemon --delay 500ms --watch server.js --watch controllers --watch middleware --watch models --watch routes --watch socket --ignore .env --ignore .env.example --ignore test-mongo.js server.js",
     "test": "jest"
   },
   "keywords": [

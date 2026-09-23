@@ -19,6 +19,17 @@ async function authRequest(endpoint, payload) {
   return data;
 }
 
+async function publicAuthRequest(endpoint, payload) {
+  const response = await fetch(`${API_URL}/auth/${endpoint}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.message || "Request failed");
+  return data;
+}
+
 function normalizeUser(user) {
   return {
     ...user,
@@ -59,6 +70,12 @@ export function AuthProvider({ children }) {
     return { ...response, user };
   };
 
+  const forgotPassword = (email) =>
+    publicAuthRequest("forgot-password", { email });
+
+  const resetPassword = (token, password) =>
+    publicAuthRequest("reset-password", { token, password });
+
   const logout = () => {
     localStorage.removeItem("humdard-token");
     localStorage.removeItem("humdard-user");
@@ -72,6 +89,8 @@ export function AuthProvider({ children }) {
       user,
       login,
       signup,
+      forgotPassword,
+      resetPassword,
       logout,
       isAuthenticated: Boolean(token),
     }),

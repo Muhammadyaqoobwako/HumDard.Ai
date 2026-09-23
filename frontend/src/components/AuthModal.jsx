@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
 function AuthModal({ mode, onClose, onSwitchMode }) {
-  const { login, signup } = useAuth();
+  const { login, signup, forgotPassword } = useAuth();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -16,9 +16,12 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotSent, setForgotSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const isLogin = mode === "login";
+  const isForgot = mode === "forgot";
 
   const close = () => {
     setError("");
@@ -79,6 +82,20 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
     }
   };
 
+  const handleForgotSubmit = async (event) => {
+    event.preventDefault();
+    setError("");
+    setIsLoading(true);
+    try {
+      await forgotPassword(forgotEmail);
+      setForgotSent(true);
+    } catch (requestError) {
+      setError(requestError.message || "Could not send reset email.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 py-6 backdrop-blur-sm">
       <div
@@ -97,7 +114,7 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
               HumDard AI
             </p>
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              {isLogin ? "Login" : "Create Account"}
+              {isLogin ? "Login" : isForgot ? "Forgot Password" : "Create Account"}
             </h2>
           </div>
           <button
@@ -164,8 +181,9 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
                   />
                   Remember me
                 </label>
-                <button
+                  <button
                   type="button"
+                    onClick={() => onSwitchMode("forgot")}
                   className="font-semibold text-blue-600 hover:underline dark:text-blue-300"
                 >
                   Forgot password?
@@ -180,6 +198,27 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
                 className="w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-70"
               >
                 {isLoading ? "Logging in..." : "Login"}
+              </button>
+            </form>
+          ) : isForgot ? (
+            <form onSubmit={handleForgotSubmit} className="space-y-4">
+              <p className="text-sm text-slate-600 dark:text-slate-300">
+                Enter your email and we will send a secure password reset link.
+              </p>
+              <input
+                type="email"
+                required
+                value={forgotEmail}
+                onChange={(event) => setForgotEmail(event.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                placeholder="you@example.com"
+              />
+              {forgotSent ? (
+                <p className="text-sm text-emerald-600">Check your email for the reset link.</p>
+              ) : null}
+              {error ? <p className="text-sm text-red-500">{error}</p> : null}
+              <button type="submit" disabled={isLoading} className="w-full rounded-xl bg-blue-600 px-4 py-3 font-semibold text-white disabled:opacity-70">
+                {isLoading ? "Sending..." : "Send reset link"}
               </button>
             </form>
           ) : (
@@ -264,7 +303,7 @@ function AuthModal({ mode, onClose, onSwitchMode }) {
             onClick={() => onSwitchMode(isLogin ? "signup" : "login")}
             className="mt-4 w-full text-sm font-medium text-slate-600 transition hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-300"
           >
-            {isLogin ? "Switch to Signup" : "Switch to Login"}
+            {isForgot ? "Back to Login" : isLogin ? "Switch to Signup" : "Switch to Login"}
           </button>
         </div>
       </section>

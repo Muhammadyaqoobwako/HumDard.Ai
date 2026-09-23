@@ -9,6 +9,7 @@ import LandingPage from "./pages/LandingPage";
 import LiveSession from "./pages/LiveSession";
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
+import ResetPassword from "./pages/ResetPassword";
 import { useTheme } from "./contexts/ThemeContext";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
               path="/signup"
               element={<LandingPage initialAuthMode="signup" />}
             />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route
               path="/dashboard"
