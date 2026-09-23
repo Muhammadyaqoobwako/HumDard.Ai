@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo, useState } from "react";
 
 const AuthContext = createContext(null);
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4001/api";
 
 async function authRequest(endpoint, payload) {
   const response = await fetch(`${API_URL}/auth/${endpoint}`, {
